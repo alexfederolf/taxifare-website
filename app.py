@@ -1,160 +1,3 @@
-# ──────────────────────────────────────────────
-# BASIC START
-# ──────────────────────────────────────────────
-
-# import streamlit as st
-# import requests
-# from datetime import datetime
-# import pandas as pd
-# import pydeck as pdk
-# from math import radians, sin, cos, sqrt, atan2
-
-# # -------------------------
-# # TaxiFare Model Front
-# # -------------------------
-
-# st.title("🚕 Taxi Fare Model")
-
-# st.markdown("""
-# Enter the details of your ride and get a price prediction from the model API.
-# """)
-
-# st.divider()
-
-# # -------------------------
-# # Ride inputs (controllers)
-# # -------------------------
-
-# pickup_date = st.date_input("Pickup date")
-# pickup_time = st.time_input("Pickup time")
-
-# pickup_datetime = datetime.combine(pickup_date, pickup_time)
-
-# pickup_longitude = st.number_input(
-#     "Pickup longitude",
-#     value=-73.9857  # Manhattan approx
-# )
-
-# pickup_latitude = st.number_input(
-#     "Pickup latitude",
-#     value=40.7484
-# )
-
-# dropoff_longitude = st.number_input(
-#     "Dropoff longitude",
-#     value=-73.9851
-# )
-
-# dropoff_latitude = st.number_input(
-#     "Dropoff latitude",
-#     value=40.7580
-# )
-
-# passenger_count = st.slider(
-#     "Passenger count",
-#     min_value=1,
-#     max_value=8,
-#     value=1
-# )
-
-# # -------------------------
-# # Distance calculation
-# # -------------------------
-# def haversine(lat1, lon1, lat2, lon2):
-#     R = 6371
-#     dlat = radians(lat2 - lat1)
-#     dlon = radians(lon2 - lon1)
-
-#     a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
-#     return R * 2 * atan2(sqrt(a), sqrt(1 - a))
-
-# distance_km = haversine(
-#     pickup_latitude, pickup_longitude,
-#     dropoff_latitude, dropoff_longitude
-# )
-
-# # # -------------------------
-# # # Map section (live preview)
-# # # -------------------------
-# # st.subheader("🗺️ Trip preview")
-
-# # col1, col2 = st.columns(2)
-
-# # with col1:
-# #     st.metric("Pickup", f"{pickup_latitude:.4f}, {pickup_longitude:.4f}")
-
-# # with col2:
-# #     st.metric("Dropoff", f"{dropoff_latitude:.4f}, {dropoff_longitude:.4f}")
-
-# # map_data = pd.DataFrame({
-# #     "lat": [pickup_latitude, dropoff_latitude],
-# #     "lon": [pickup_longitude, dropoff_longitude]
-# # })
-
-# # st.map(map_data)
-
-# # -------------------------
-# # Map section
-# # -------------------------
-# st.subheader("🗺️ Route preview")
-
-# layer = pdk.Layer(
-#     "LineLayer",
-#     data=[{
-#         "start": [pickup_longitude, pickup_latitude],
-#         "end": [dropoff_longitude, dropoff_latitude]
-#     }],
-#     get_source_position="start",
-#     get_target_position="end",
-#     get_width=5,
-# )
-
-# view_state = pdk.ViewState(
-#     latitude=pickup_latitude,
-#     longitude=pickup_longitude,
-#     zoom=11
-# )
-
-# st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state))
-
-# st.metric("Distance (km)", f"{distance_km:.2f}")
-
-# # -------------------------
-# # API URL
-# # -------------------------
-# url = "https://taxifare.lewagon.ai/predict"
-
-
-# # -------------------------
-# # Build params dictionary
-# # -------------------------
-# params = {
-#     "pickup_datetime": pickup_datetime,
-#     "pickup_longitude": pickup_longitude,
-#     "pickup_latitude": pickup_latitude,
-#     "dropoff_longitude": dropoff_longitude,
-#     "dropoff_latitude": dropoff_latitude,
-#     "passenger_count": passenger_count
-# }
-
-# # -------------------------
-# # Predict button + API call
-# # -------------------------
-# if st.button("Predict fare 💰"):
-
-#     with st.spinner("Calculating fare..."):
-#         response = requests.get(url, params=params)
-#         result = response.json()
-
-#         fare = result.get("fare", result)
-
-#     st.success(f"💰 Estimated fare: ${fare:.2f}")
-
-# ──────────────────────────────────────────────
-# BASIC END
-# ──────────────────────────────────────────────
-
-
 
 import streamlit as st
 import requests
@@ -191,8 +34,8 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # ──────────────────────────────────────────────
 # Layout: two columns
-# Left  → all user inputs
-# Right → map preview
+# Left  --> all user inputs
+# Right --> map preview
 # ──────────────────────────────────────────────
 col_inputs, col_map = st.columns([1, 1.4], gap="large")
 
@@ -207,7 +50,7 @@ with col_inputs:
     with time_col:
         pickup_time = st.time_input("Pickup time")
 
-    # Combine date + time into one datetime object (required by the API)
+    # Combining date + time into one datetime object (required by the API)
     pickup_datetime = datetime.combine(pickup_date, pickup_time)
 
     st.divider()
@@ -315,7 +158,7 @@ with col_map:
 
 
 # ──────────────────────────────────────────────
-# Fare result — shown below both columns
+# Fare result 
 # ──────────────────────────────────────────────
 if predict_clicked:
     st.divider()
